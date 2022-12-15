@@ -9,6 +9,8 @@ import json
 
 version_id = "0.0.1"
 
+user_request = {}
+
 # set up the introductory statement for the bot when the /start command is invoked
 def start(update, context):
     chat_id = update.effective_chat.id
@@ -24,6 +26,17 @@ def version(update, context):
 def pickup_command(update, context):
     # Get the chat id
     chat_id = update.message.chat_id
+    user_request["type"] = "can pickup someone"
+    # Create the keyboard with the 2 options
+    keyboard = [['to-train', 'from-train']]
+    # Send a message to the user with the keyboard
+    context.bot.send_message(chat_id=chat_id, text='Select the direction:', reply_markup=telegram.ReplyKeyboardMarkup(keyboard))
+
+# Define the function to handle the /pickup command
+def ride_command(update, context):
+    # Get the chat id
+    chat_id = update.message.chat_id
+    user_request["type"] = "want to ride with someone"
     # Create the keyboard with the 2 options
     keyboard = [['to-train', 'from-train']]
     # Send a message to the user with the keyboard
@@ -35,6 +48,8 @@ def pick_train(update, context):
     chat_id = update.message.chat_id
     # Get the selected option
     option = update.message.text
+    user_request["direction"] = option
+
     # Create the keyboard with the 2 options
     keyboard = [['today', 'tomorrow']]
     # Send a message to the user with the keyboard
@@ -46,10 +61,25 @@ def pick_date(update, context):
     chat_id = update.message.chat_id
     # Get the selected option
     option = update.message.text
+    user_request["day"] = option
+
     # Create the keyboard with the time options
-    keyboard = [['6:06 AM', '6:39 AM'], ['07:06 AM', '07:39 AM'], ['08:06 AM', '08:39 AM']]
+    keyboard = [['06:06 AM', '06:39 AM'], ['07:06 AM', '07:39 AM'], ['08:06 AM', '08:39 AM']]
     # Send a message to the user with the keyboard
     context.bot.send_message(chat_id=chat_id, text='Select train time:', reply_markup=telegram.ReplyKeyboardMarkup(keyboard))
+
+def save_query(update, context):
+    # Get the chat id
+    chat_id = update.message.chat_id
+    # Get the selected option
+    option = update.message.text
+    user_request["time"] = option
+
+    # Send a message to the user with the summary
+    text = "You've indicated that you " + user_request["type"] + " " + user_request["direction"] + " " + \
+        user_request["day"] + " at " + user_request["time"]
+    context.bot.send_message(chat_id=chat_id, text=text)
+
 
 
 
@@ -72,6 +102,9 @@ if telegram_bot_token != 'TEST':
 
     # Add the message handler for the today and tomorrow options
     dispatcher.add_handler(MessageHandler(Filters.regex('^(today|tomorrow)$'), pick_date))
+
+    dispatcher.add_handler(MessageHandler(Filters.regex('^\d\d:\d\d [AP]M$'), save_query))
+
 
     # updater.start_polling()
     updater.start_webhook(listen="0.0.0.0",

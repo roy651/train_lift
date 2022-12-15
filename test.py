@@ -2,7 +2,7 @@ import os
 os.environ['TGRM_TKN'] = "TEST"
 
 from bot import _run_order
-order = {
+request = {
     "FirstName": "ddd",
     "LastName": "fff",
     "Phone": "0542277222",
