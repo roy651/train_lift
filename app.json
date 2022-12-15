@@ -1,0 +1,17 @@
+{
+    "name": "Train lift",
+    "image": "heroku/python",
+    "repository": "https://github.com/roy651/train_lift",
+    "keywords": [
+        "python"
+    ],
+    "addons": [],
+    "env": {},
+    "environments": {
+        "test": {
+            "scripts": {
+                "test": "python test.py"
+            }
+        }
+    }
+}
