@@ -96,6 +96,7 @@ if telegram_bot_token != 'TEST':
 
     # Add the command handler for the /pickup command
     dispatcher.add_handler(CommandHandler('canpickup', pickup_command))
+    dispatcher.add_handler(CommandHandler('needride', ride_command))
 
     # Add the message handler for the to-train and from-train options
     dispatcher.add_handler(MessageHandler(Filters.regex('^(to-train|from-train)$'), pick_train))
