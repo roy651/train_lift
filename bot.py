@@ -14,7 +14,7 @@ user_request = {}
 # set up the introductory statement for the bot when the /start command is invoked
 def start(update, context):
     chat_id = update.effective_chat.id
-    context.bot.send_message(chat_id=chat_id, text="/canpickup OR /needride")
+    context.bot.send_message(chat_id=chat_id, text="select one of the options: /canpickup OR /needride")
 
 def version(update, context):
     print("Version is:" + version_id)
@@ -107,6 +107,7 @@ if telegram_bot_token != 'TEST':
 
     dispatcher.add_handler(MessageHandler(Filters.regex('^\d\d:\d\d [AP]M$'), save_query))
 
+    dispatcher.add_handler(MessageHandler(Filters.text, start))
 
     # updater.start_polling()
     updater.start_webhook(listen="0.0.0.0",
