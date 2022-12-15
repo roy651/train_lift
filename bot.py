@@ -79,7 +79,7 @@ def save_query(update, context):
     text = "You've indicated that you " + user_request["type"] + " " + user_request["direction"] + " " + \
         user_request["day"] + " at " + user_request["time"]
     keyboard = []
-    context.bot.send_message(chat_id=chat_id, text=text, reply_markup=telegram.ReplyKeyboardMarkup(keyboard))
+    context.bot.send_message(chat_id=chat_id, text=text, reply_markup=telegram.ReplyKeyboardRemove())
 
 
 
